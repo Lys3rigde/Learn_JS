@@ -3,8 +3,6 @@ let num = 266219;
 let str = String(num);
 let arr = str.split('');
 
-console.log(arr);
-
 let result = arr.reduce(function(a,b) {
     "use strict";
     return a*b;
