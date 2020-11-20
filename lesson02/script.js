@@ -11,3 +11,5 @@ console.log (addExpenses.length);
 console.log ("Период равен " + period + " месяцам");
 console.log ("Цель заработать " + mission + " гривен");
 console.log(addExpenses.toLowerCase(), addExpenses.split(', '));
+let budgetDay = money/30;
+console.log(budgetDay);
