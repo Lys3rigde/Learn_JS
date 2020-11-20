@@ -1,7 +1,7 @@
-var money;
+let money;
 let income;
 let addExpenses;
-const deposit = 3;
+let deposit;
 let mission;
 let period;
 
