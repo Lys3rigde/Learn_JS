@@ -19,7 +19,7 @@ console.log (typeof deposit);
 console.log (addExpenses.length);
 console.log ("Период равен " + period + " месяцам");
 console.log ("Цель заработать " + mission + " гривен");
-console.log(addExpenses.toLowerCase(), addExpenses.split(', '));
+console.log(addExpenses.toLowerCase().split(', '));
 
 money = prompt("Ваш месячный доход?");
 addExpenses = prompt("Перечислите возможные расходы за рассчитываемый период через запятую");
