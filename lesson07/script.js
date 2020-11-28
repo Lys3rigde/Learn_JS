@@ -8,8 +8,12 @@ let money;
 
 
     let appData = {
-        
+        income: {},
+        addIncome: [],
+        period: 12,
         mission: 600000,
+        addExpenses: [],
+        deposit: false,
         budget: money,
         budgetDay: 0,
         budgetMonth: 0,
@@ -27,15 +31,18 @@ let money;
         }
     };
 
-    appData.asking();
-
     do{
         appData.budget = prompt("Ваш месячный доход?");
     }
+
     while(!isNumber(appData.budget));
 
-// let addExpenses = prompt("Перечислите возможные расходы за рассчитываемый период через запятую"),
-// deposit = confirm("Есть ли у вас депозит в банке?");
+    appData.asking();
+
+
+
+appData.addExpenses = prompt("Перечислите возможные расходы за рассчитываемый период через запятую");
+appData.deposit = confirm("Есть ли у вас депозит в банке?");
 
     appData.getExpensesMonth = function(){ 
         for (let key in appData.expenses){
@@ -76,7 +83,7 @@ let money;
         }
     };
     appData.getStatusIncome();
-    
+
     console.log("Наша программа включает в себя данные:");
     for (let key in appData) {
         console.log(key + ": " + appData[key]);
