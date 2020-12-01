@@ -24,13 +24,13 @@ let money;
         asking: function(){
 
             if (confirm("Есть ли у вас дополнительный источник заработка?")) {
-                let itemIncome = prompt("Какой у вас дополнительный заработок?");
+                let itemIncome = prompt("Какой у вас дополнительный заработок?", "таксую");
                 while(isNumber(itemIncome)) {
-                itemIncome = prompt("Какой у вас дополнительный заработок?");
+                itemIncome = prompt("Какой у вас дополнительный заработок?", "таксую");
                 }
-                let cashIncome = +prompt("Сколько вы на этом зарабатываете?");
+                let cashIncome = +prompt("Сколько вы на этом зарабатываете?", 20000);
                 while(!isNumber(cashIncome)) {
-                    cashIncome = +prompt("Сколько вы на этом зарабатываете?");
+                    cashIncome = +prompt("Сколько вы на этом зарабатываете?", 20000);
                 }
                 appData.income[itemIncome] = cashIncome;
             }
@@ -40,9 +40,9 @@ let money;
                 while (isNumber(exps1)) {
                     exps1 = prompt("Введите обязательную статью расходов в этом месяце");
                 }
-                let exps2 = +prompt("Во сколько обойдется?");
+                let exps2 = +prompt("Во сколько обойдется?", 5000);
                 while (!isNumber(exps2)) {
-                    exps2 = +prompt("Во сколько обойдется?");
+                    exps2 = +prompt("Во сколько обойдется?", 5000);
                 }
                 appData.expenses[exps1] = exps2;
             }
@@ -51,13 +51,13 @@ let money;
 
         getInfoDeposit: function() {
             if(appData.deposit){
-                appData.percentDeposit = +prompt("Какой ваш годовой процент?");
+                appData.percentDeposit = +prompt("Какой ваш годовой процент?", 10);
                 while(!isNumber(appData.percentDeposit)){
-                    appData.percentDeposit = +prompt("Какой ваш годовой процент?");
+                    appData.percentDeposit = +prompt("Какой ваш годовой процент?", 10);
                 }
-                appData.moneyDeposit = +prompt("Какая сумма у вас заложена?");
+                appData.moneyDeposit = +prompt("Какая сумма у вас заложена?", 20000);
                 while(!isNumber(appData.moneyDeposit)){
-                    appData.moneyDeposit = +prompt("Какая сумма у вас заложена?");
+                    appData.moneyDeposit = +prompt("Какая сумма у вас заложена?", 20000);
                 }
             }
         },
@@ -69,7 +69,7 @@ let money;
     };
 
     do{
-        appData.budget = prompt("Ваш месячный доход?");
+        appData.budget = prompt("Ваш месячный доход?", 50000);
     }
 
     while(!isNumber(appData.budget));
@@ -78,7 +78,7 @@ let money;
 
 
 
-appData.addExpenses = prompt("Перечислите возможные расходы за рассчитываемый период через запятую");
+appData.addExpenses = prompt("Перечислите возможные расходы за рассчитываемый период через запятую", "такси еда пивас");
 appData.addExpenses = appData.addExpenses.split(' ').map(word=>{ return word[0].toUpperCase() + word.slice(1);});
 appData.strExpenses = appData.addExpenses.join(', ');
 console.log(appData.strExpenses);
@@ -131,3 +131,25 @@ appData.deposit = confirm("Есть ли у вас депозит в банке?
 
     appData.getInfoDeposit();
     appData.calcSavedMoney();
+
+    const start = document.getElementById('start'),
+    btnPlus0 = document.getElementsByTagName('button')[0],
+    btnPlus1 = document.getElementsByTagName('button')[1],
+    depositCheck = document.querySelector('#deposit-check'),
+    incomeItem = document.querySelectorAll('.additional_income-item'),
+    budgetDayValue = document.getElementsByClassName('budget_day-value'),
+    epxensesMonthValue = document.getElementsByClassName('expenses_month-value'),
+    additionalIncomeValue = document.getElementsByClassName('additional_income-value'),
+    additionalExpensesValue = document.getElementsByClassName('additional_expenses-value'),
+    incomePeriodValue = document.getElementsByClassName('income_period-value'),
+    targetMonthValue = document.getElementsByClassName('target_month-value'),
+    salaryAmount = document.querySelector('.salary-amount'),
+    incomeTitle = document.querySelector('.income-title'),
+    incomeAmount = document.querySelector('.income-amount'),
+    expensesTitle = document.querySelector('.expenses-title'),
+    expensesAmout = document.querySelector('.expenses-amount'),
+    additionalExpensesTitle = document.querySelector('.additional-expenses-item'),
+    targetAmount = document.querySelector('.target-amount'),
+    periodSelect = document.querySelector('.period-select'),
+    budgetMonth = document.querySelector('budget_month-value'),
+    cancel = document.querySelector('#cancel');
