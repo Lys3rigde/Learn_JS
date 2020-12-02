@@ -1,7 +1,5 @@
 'use strict';
 
-console.log(document.getElementById('start'));
-
 let isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 };
@@ -133,3 +131,10 @@ appData.deposit = confirm("Есть ли у вас депозит в банке?
 
     appData.getInfoDeposit();
     appData.calcSavedMoney();
+
+    const start = document.getElementById('start'),
+    btnPlus0 = document.getElementsByTagName('btn_plus')[0],
+    btnPlus1 = document.getElementsByTagName('btn_plus')[1],
+    depositCheck = document.getElementById('deposit-check'),
+    incomeItem = document.querySelectorAll('additional_income-item');
+    console.log(start, btnPlus0, depositCheck, incomeItem);
