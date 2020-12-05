@@ -12,7 +12,6 @@ incomePeriodValue = document.getElementsByClassName('income_period-value')[0],
 targetMonthValue = document.getElementsByClassName('target_month-value')[0],
 salaryAmount = document.querySelector('.salary-amount'),
 incomeTitle = document.querySelector('.income-title'),
-incomeAmount = document.querySelector('.income-amount'),
 expensesTitle = document.querySelector('.expenses-title'),
 expensesItems = document.querySelectorAll('.expenses-items'),
 additionalExpensesItem = document.querySelectorAll('.additional_expenses-item')[0],
@@ -39,6 +38,7 @@ let isNumber = function(n) {
         budgetDay: 0,
         budgetMonth: 200000,
         expensesMonth: 0,
+        incomeMonth: 0,
         percentDeposit: 0,
         moneyDeposit: 0,
         expenses: {},
@@ -49,6 +49,7 @@ let isNumber = function(n) {
             appData.getExpenses();
             appData.getIncome();
             appData.getExpensesMonth();
+            appData.getIncomeMonth();
             appData.getAddExpenses();
             appData.getAddIncome();
             appData.getBudget();
@@ -162,7 +163,7 @@ let isNumber = function(n) {
         }   else if (!isNumber(salaryAmount.value)) {
             alert("Ошибка, введите числовое значение");
         }   else {
-            start.addEventListener('click', appData.start);
+           appData.start();
         }
     });
 
@@ -176,9 +177,14 @@ let isNumber = function(n) {
             appData.expensesMonth += +appData.expenses[key];
         }
     };
+    appData.getIncomeMonth = function(){ 
+        for (let key in appData.income){
+            appData.incomeMonth += +appData.income[key];
+        }
+    };
     
     appData.getBudget = function(){
-        appData.budgetMonth = appData.budget + appData.IncomeMonth - appData.expensesMonth;
+        appData.budgetMonth = appData.budget + appData.incomeMonth - appData.expensesMonth;
         appData.budgetDay = Math.floor(appData.budgetMonth/30);
         return appData.budgetMonth, appData.budgetDay;
     };
