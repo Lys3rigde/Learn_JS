@@ -11,8 +11,8 @@ additionalExpensesValue = document.getElementsByClassName('additional_expenses-v
 incomePeriodValue = document.getElementsByClassName('income_period-value')[0],
 targetMonthValue = document.getElementsByClassName('target_month-value')[0],
 salaryAmount = document.querySelector('.salary-amount'),
-incomeTitle = document.querySelector('.income-title'),
-expensesTitle = document.querySelector('.expenses-title'),
+incomeTitle = document.querySelectorAll('.income-title'),
+expensesTitle = document.querySelectorAll('.expenses-title'),
 expensesItems = document.querySelectorAll('.expenses-items'),
 additionalExpensesItem = document.querySelectorAll('.additional_expenses-item')[0],
 additionalIncomeItem = document.querySelectorAll('.additional_income-item'),
@@ -20,12 +20,63 @@ targetAmount = document.querySelector('.target-amount'),
 periodSelect = document.querySelector('.period-select'),
 budgetMonthValue = document.querySelector('.budget_month-value'),
 incomeItems = document.querySelectorAll('.income-items'),
+incomeAmount = document.querySelector('.income-amount'),
+expensesAmount = document.querySelector('.expenses-amount'),
 cancel = document.querySelector('#cancel');
+
 
 let isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
+
+function salaryUpdateValue(e) {
+    let periodAmount = document.querySelector('.salary-amount');
+    periodAmount.value =  periodAmount.value.replace(/[^0-9]/,'');
+ }
+ salaryAmount.addEventListener('input', salaryUpdateValue);
+
+function incomeAmountUpdateValue(e) {
+    let periodAmount = document.querySelector('.income-amount');
+    periodAmount.value =  periodAmount.value.replace(/[^0-9]/,'');
+ }
+ incomeAmount.addEventListener('input', incomeAmountUpdateValue);
+ 
+ function expensesAmountUpdateValue(e) {
+    let periodAmount = document.querySelector('.expenses-amount');
+    periodAmount.value =  periodAmount.value.replace(/[^0-9]/,'');
+ }
+ expensesAmount.addEventListener('input', expensesAmountUpdateValue);
+
+ function targetAmountUpdateValue(e) {
+    let periodAmount = document.querySelector('.target-amount');
+    periodAmount.value =  periodAmount.value.replace(/[^0-9]/,'');
+ }
+ targetAmount.addEventListener('input', targetAmountUpdateValue);
+
+ function incomeTitleUpdateValue(e) {
+    let periodAmount = document.querySelectorAll('.income-title')[1];
+    periodAmount.value =  periodAmount.value.replace(/[^а-яА-Я,.?!;":]/,'');
+ }
+ incomeTitle[1].addEventListener('input', incomeTitleUpdateValue);
+
+ function expensesTitleUpdateValue(e) {
+    let periodAmount = document.querySelectorAll('.expenses-title')[1];
+    periodAmount.value =  periodAmount.value.replace(/[^а-яА-Я,.?!;":]/,'');
+ }
+ expensesTitle[1].addEventListener('input', expensesTitleUpdateValue);
+
+ function additionalIncomeFirstItemUpdateValue(e) {
+    let periodAmount = document.querySelectorAll('.additional_income-item')[0];
+    periodAmount.value =  periodAmount.value.replace(/[^а-яА-Я,.?!;":]/,'');
+ }
+ additionalIncomeItem[0].addEventListener('input', additionalIncomeFirstItemUpdateValue);
+
+ function additionalIncomeSecondItemUpdateValue(e) {
+    let periodAmount = document.querySelectorAll('.additional_income-item')[1];
+    periodAmount.value =  periodAmount.value.replace(/[^а-яА-Я,.?!;":]/,'');
+ }
+ additionalIncomeItem[1].addEventListener('input', additionalIncomeSecondItemUpdateValue);
 
     let appData = {
         budget: 0,
@@ -59,6 +110,7 @@ let isNumber = function(n) {
 
             appData.showResult();
         },
+
         showResult: function() {
             budgetMonthValue.value = appData.budgetMonth;
             budgetDayValue.value = appData.budgetDay;
@@ -78,16 +130,33 @@ let isNumber = function(n) {
             
         },
 
+        expensesCloneAmountUpdateValue: function(e, d) {
+
+            var incD = d.querySelector('.expenses-amount');
+            incD.value =  incD.value.replace(/[^0-9]/,'');
+
+        },
+
+        expensesCloneTitleUpdateValue: function(e, d) {
+
+            var incD = d.querySelector('.expenses-title');
+            incD.value =  incD.value.replace(/[^а-яА-Я,.?!;":]/,'');
+
+        },
+
         addExpensesBlock: function() {
-        
             let cloneExpensesItems = expensesItems[0].cloneNode(true);
             expensesItems[0].parentNode.insertBefore(cloneExpensesItems, btnPlus1);
             expensesItems = document.querySelectorAll('.expenses-items');
-            
+            cloneExpensesItems.querySelector('.expenses-title').value = '';
+            cloneExpensesItems.querySelector('.expenses-amount').value = '';
+            cloneExpensesItems.addEventListener('input', (e)=> {appData.expensesCloneAmountUpdateValue(e, cloneExpensesItems );});
+            cloneExpensesItems.addEventListener('input', (e)=> {appData.expensesCloneTitleUpdateValue(e, cloneExpensesItems );});
             if (expensesItems.length === 3) {
                 btnPlus1.style.display = 'none';
             }
         },
+
         getExpenses: function () {
             expensesItems.forEach(function(item) {
                 let itemExpenses = item.querySelector('.expenses-title').value;
@@ -98,11 +167,29 @@ let isNumber = function(n) {
             });
         },
 
+        incomeCloneAmountUpdateValue: function(e, d) {
+
+            var incD = d.querySelector('.income-amount');
+            incD.value =  incD.value.replace(/[^0-9]/,'');
+
+        },
+
+        incomeCloneTitleUpdateValue: function(e, d) {
+
+            var incD = d.querySelector('.income-title');
+            incD.value =  incD.value.replace(/[^а-яА-Я,.?!;":]/,'');
+
+        },
+
         addIncomeBlock: function() {
 
             let cloneIncomeItems = incomeItems[0].cloneNode(true);
             incomeItems[0].parentNode.insertBefore(cloneIncomeItems, btnPlus0);
             incomeItems = document.querySelectorAll('.income-items');
+            cloneIncomeItems.querySelector('.income-title').value = '';
+            cloneIncomeItems.querySelector('.income-amount').value = '';
+            cloneIncomeItems.addEventListener('input', (e)=> {appData.incomeCloneAmountUpdateValue(e, cloneIncomeItems );});
+            cloneIncomeItems.addEventListener('input', (e)=> {appData.incomeCloneTitleUpdateValue(e, cloneIncomeItems );});
 
             if (incomeItems.length === 3) {
                 btnPlus0.style.display = 'none';
@@ -169,7 +256,8 @@ let isNumber = function(n) {
 
     btnPlus1.addEventListener('click', appData.addExpensesBlock);
     btnPlus0.addEventListener('click', appData.addIncomeBlock);
-
+    
+   
 
 
     appData.getExpensesMonth = function(){ 
