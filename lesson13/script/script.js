@@ -22,8 +22,8 @@ budgetMonthValue = document.querySelector('.budget_month-value'),
 incomeItems = document.querySelectorAll('.income-items'),
 incomeAmount = document.querySelector('.income-amount'),
 expensesAmount = document.querySelector('.expenses-amount'),
-cancel = document.querySelector('#cancel');
-
+cancel = document.querySelector('#cancel'),
+periodAmount = document.querySelector('.period-amount');
 
 let isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -83,7 +83,6 @@ function incomeAmountUpdateValue(e) {
         income: {},
         addIncome: [],
         period: 12,
-        IncomeMonth: 0,
         addExpenses: [],
         deposit: false,
         budgetDay: 0,
@@ -94,6 +93,14 @@ function incomeAmountUpdateValue(e) {
         moneyDeposit: 0,
         expenses: {},
         start: function () {
+            
+            if (salaryAmount.value !== '') {
+                let allInputs = document.querySelectorAll('[type=text]');
+                start.style.display = 'none';
+                cancel.style.display = 'block';
+                allInputs.forEach(function (e) {
+                    e.setAttribute('disabled', 'disabled');
+                });
             
 
             this.budget = +salaryAmount.value;
@@ -108,7 +115,56 @@ function incomeAmountUpdateValue(e) {
             this.getInfoDeposit();
             this.calcSavedMoney();
             this.showResult();
+            }
+        },
 
+        reset: function () {
+            let allInputs = document.querySelectorAll('[type=text]'),
+            incomeItems = document.querySelectorAll('.income-items'),
+            expensesItems = document.querySelectorAll('.expenses-items');
+            
+            this.budget = 0;
+            this.income = {};
+            this.addIncome = [];
+            this.addExpenses = [];
+            this.budgetDay = 0;
+            this.budgetMonth = 0;
+            this.expensesMonth = 0;
+            this.incomeMonth = 0;
+            this.percentDeposit = 0;
+            this.moneyDeposit = 0;
+            this.expenses = {};
+
+            this.showResult();
+
+            periodSelect.value = 1;
+            periodAmount.textContent = periodSelect.value;
+            targetMonthValue.value = 0;
+
+            expensesItems.forEach(function(item, index){
+
+                if ( index !== 0 ) {
+                    item.remove();
+                }
+            });
+
+            incomeItems.forEach(function(item, index){
+
+                if ( index !== 0 ) {
+                    item.remove();
+                }
+            });
+
+            cancel.style.display = 'none';
+            start.style.display = 'block';
+            btnPlus0.style.display = 'block';
+            btnPlus1.style.display = 'block';
+
+            allInputs.forEach(function (e) {
+                e.value = '';
+                e.removeAttribute('disabled', 'disabled');
+            });
+            
         },
 
         showResult: function() {
@@ -257,99 +313,10 @@ function incomeAmountUpdateValue(e) {
             alert("Ошибка, введите числовое значение");
         }   else {
            appData.start();
-           document.querySelector('.salary-amount').disabled = true;
-
-           let incomeTitle = document.querySelectorAll('.income-title');
-           for ( let i = 0; i < incomeTitle.length; i ++) {
-               incomeTitle[i].disabled = true;
-           }
-    
-           let incomeAmount = document.querySelectorAll('.income-amount');
-           for ( let i = 0; i < incomeAmount.length; i ++) {
-               incomeAmount[i].disabled = true;
-           }
-
-           document.querySelectorAll('.additional_income-item')[0].disabled = true;
-           document.querySelectorAll('.additional_income-item')[1].disabled = true;
-
-           let expensesTitle = document.querySelectorAll('.expenses-title');
-           for ( let i = 0; i < expensesTitle.length; i ++) {
-               expensesTitle[i].disabled = true;
-           }
-
-           let expensesAmount = document.querySelectorAll('.expenses-amount');
-           for ( let i = 0; i < expensesAmount.length; i ++) {
-               expensesAmount[i].disabled = true;
-           }
-
-           document.querySelector('.additional_expenses-item').disabled = true;
-           document.querySelector('.deposit-amount').disabled = true;
-           document.querySelector('.deposit-percent').disabled = true;
-           document.querySelector('.target-amount').disabled = true;
-           start.style.display = 'none';
-           cancel.style.display = 'block';
-
         }
     });
 
-
-    cancel.addEventListener('click', function(event2){
-        event2.preventDefault();
-
-        document.querySelector('.salary-amount').disabled = false;
-        document.querySelectorAll('.additional_income-item')[0].disabled = false;
-        document.querySelectorAll('.additional_income-item')[1].disabled = false;
-       
-        let incomeTitle = document.querySelectorAll('.income-title');
-        for ( let i = 0; i < incomeTitle.length; i ++) {
-            incomeTitle[i].disabled = false;
-            incomeTitle[i].value = '';
-        }
- 
-        let incomeAmount = document.querySelectorAll('.income-amount');
-        for ( let i = 0; i < incomeAmount.length; i ++) {
-            incomeAmount[i].disabled = false;
-            incomeAmount[i].value = '';
-        }
-
-        document.querySelectorAll('.additional_income-item')[0].disabled = false;
-        document.querySelectorAll('.additional_income-item')[1].disabled = false;
-
-        let expensesTitle = document.querySelectorAll('.expenses-title');
-        for ( let i = 0; i < expensesTitle.length; i ++) {
-            expensesTitle[i].disabled = false;
-            expensesTitle[i].value = '';
-        }
-
-        let expensesAmount = document.querySelectorAll('.expenses-amount');
-        for ( let i = 0; i < expensesAmount.length; i ++) {
-            expensesAmount[i].disabled = false;
-            expensesAmount[i].value = '';
-        }
-
-        document.querySelector('.additional_expenses-item').disabled = false;
-        document.querySelector('.deposit-amount').disabled = false;
-        document.querySelector('.deposit-percent').disabled = false;
-        document.querySelector('.target-amount').disabled = false;
-        document.querySelector('.salary-amount').value = '';
-        document.querySelectorAll('.additional_income-item')[0].value = '';
-        document.querySelectorAll('.additional_income-item')[1].value = '';
-        document.querySelector('.additional_expenses-item').value = '';
-        document.querySelector('.deposit-amount').value = '';
-        document.querySelector('.deposit-percent').value = '';
-        document.querySelector('.target-amount').value = '';
-        document.querySelector('.budget_month-value').value = 0;
-        document.querySelector('.budget_day-value').value = 0;
-        document.querySelector('.expenses_month-value').value = 0;
-        document.querySelector('.additional_income-value').value = '';
-        document.querySelector('.additional_expenses-value').value = '';
-        document.querySelector('.income_period-value').value = 0;
-        document.querySelector('.target_month-value').value = 0;
-        cancel.style.display = 'none';
-        start.style.display = 'block';
-        console.log(appData);
-    });
-    
+    cancel.addEventListener('click', appData.reset.bind(appData));
 
     btnPlus1.addEventListener('click', appData.addExpensesBlock);
     btnPlus0.addEventListener('click', appData.addIncomeBlock);
@@ -399,8 +366,7 @@ function incomeAmountUpdateValue(e) {
     };
     
 
-const periodInput = document.querySelector('.period-select'),
-periodAmount = document.querySelector('.period-amount');
+let periodInput = document.querySelector('.period-select');
 periodInput.addEventListener('input', () => {
 periodAmount.textContent = periodInput.value;
 });
