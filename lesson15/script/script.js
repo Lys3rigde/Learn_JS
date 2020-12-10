@@ -169,7 +169,6 @@ const incomeAmountUpdateValue = (e) => {
        }
 
        showResult () {
-        console.log(this);
         budgetMonthValue.value = this.budgetMonth;
         budgetDayValue.value = this.budgetDay;
         epxensesMonthValue.value = this.expensesMonth;
@@ -220,7 +219,6 @@ const incomeAmountUpdateValue = (e) => {
 
         getExpenses ()  {
             const _this = this;
-            console.log(_this);
             expensesItems.forEach((item) => {
                 const itemExpenses = item.querySelector(`.expenses-title`).value;
                 const cashExpenses = item.querySelector(`.expenses-amount`).value;
@@ -246,14 +244,13 @@ const incomeAmountUpdateValue = (e) => {
 
         addIncomeBlock ()  {
             const _this = this;
-            console.log(_this);
             const cloneIncomeItems = incomeItems[0].cloneNode(true);
             incomeItems[0].parentNode.insertBefore(cloneIncomeItems, btnPlus0);
             incomeItems = document.querySelectorAll(`.income-items`);
             cloneIncomeItems.querySelector(`.income-title`).value = ``;
             cloneIncomeItems.querySelector(`.income-amount`).value = ``;
             cloneIncomeItems.addEventListener(`input`, 
-            (e)=> {_this.incomeCloneAmountUpdateValue(e, cloneIncomeItems );console.log(_this);});
+            (e)=> {_this.incomeCloneAmountUpdateValue(e, cloneIncomeItems );});
             cloneIncomeItems.addEventListener(`input`, 
             (e)=> {_this.incomeCloneTitleUpdateValue(e, cloneIncomeItems );});
     
@@ -355,7 +352,6 @@ const incomeAmountUpdateValue = (e) => {
 
         eventListeners () {
             const _this = this;
-            console.log(this);
                 start.addEventListener(`click`, _this.start.bind(_this) ,(event) => {
                     event.preventDefault();
                     if (salaryAmount.value === ``) {
@@ -371,7 +367,6 @@ const incomeAmountUpdateValue = (e) => {
                 btnPlus1.addEventListener(`click`, this.addExpensesBlock.bind(this));
                 btnPlus0.addEventListener(`click`, this.addIncomeBlock.bind(this));
                 periodSelect.addEventListener(`input`, this.changePeriodAmount.bind(this));
-                console.log(this);
            
             }
 
