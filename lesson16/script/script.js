@@ -311,7 +311,7 @@ const incomeAmountUpdateValue = (e) => {
         }
 
         getBudget () {
-            const monthDeposit = this.moneyDeposit * this.percentDeposit;
+            const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
             this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + monthDeposit;
             this.budgetDay = Math.floor(this.budgetMonth/30);
             return this.budgetMonth, this.budgetDay;
