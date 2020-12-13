@@ -24,10 +24,14 @@ cancel = document.querySelector(`#cancel`),
 periodAmount = document.querySelector(`.period-amount`),
 depositBank = document.querySelector(`.deposit-bank`),
 depositAmount = document.querySelector(`.deposit-amount`),
-depositPercent = document.querySelector(`.deposit-percent`);
+depositPercent = document.querySelector(`.deposit-percent`),
+resultInputs = document.querySelectorAll('.result input');
 
 let expensesItems = document.querySelectorAll(`.expenses-items`),
-incomeItems = document.querySelectorAll(`.income-items`);
+incomeItems = document.querySelectorAll(`.income-items`),
+leftInputs = document.querySelectorAll('.data input[type=text]'),
+resultStorage = {};
+
 
 const isNumber = (n) => {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -76,6 +80,51 @@ const incomeAmountUpdateValue = (e) => {
  };
  additionalIncomeItem[1].addEventListener(`input`, additionalIncomeSecondItemUpdateValue);
 
+ const setCookie = (key, value) => {
+    let cookieStr = key + '=' + value;
+    let date = Date.now() + 1000*60*60*24*7;
+    date = new Date(date);
+    cookieStr += '; expires = ' + date.toGMTString();
+    document.cookie = cookieStr;
+};
+const unsetCookie = (key) => {
+    let cookieStr = key + '= ""';
+    let date = Date.now() - 1000000;
+    date = new Date(date);
+    cookieStr += '; expires = ' + date.toGMTString();
+    document.cookie = cookieStr;
+};
+const checkCookie = (resultObj) => {
+    for (const key in resultObj) {
+        if(!document.cookie.includes(key)) {return false;}
+    }
+    if(!document.cookie.includes('isLoad')) {return false;}
+    return true;
+};
+
+const init = function() {
+    if (localStorage.budget) {
+        resultStorage = JSON.parse(localStorage.budget);
+        if (checkCookie(resultStorage)) { 
+            resultInputs.forEach(item => {
+                item.value = resultStorage[item.classList[1]];
+            });
+            for (let input of leftInputs) {
+                input.disabled = true;
+            }
+            start.style.display = 'none';
+            cancel.style.display = 'block';
+        } else { 
+            for (const key in resultStorage) {
+                unsetCookie(key);
+            }
+            unsetCookie('isLoad');
+            localStorage.removeItem('budget');
+        }
+        
+    } 
+};
+
     class AppData {
         constructor(){
             this.budget = 0;
@@ -117,6 +166,7 @@ const incomeAmountUpdateValue = (e) => {
             this.getStatusIncome();
             this.calcSavedMoney();
             this.showResult();
+            this.saveToStorage();
             }
     
        }
@@ -166,8 +216,29 @@ const incomeAmountUpdateValue = (e) => {
             e.value = ``;
             e.removeAttribute(`disabled`, `disabled`);
         });
+
+        for (const key in resultStorage) {
+            unsetCookie(key);
+        }
+        unsetCookie('isLoad');
+        localStorage.removeItem('budget');
+
     
        }
+
+       saveToStorage() {
+        const inputObj = {};
+        for (let input of resultInputs) {
+            inputObj[input.classList[1]] = input.value;
+        }
+        localStorage.budget = JSON.stringify(inputObj);
+
+        setCookie('isLoad', 'true');
+        for (const key in inputObj) {
+            setCookie(key, inputObj[key]);
+        }
+        
+    }
 
        showResult () {
         budgetMonthValue.value = this.budgetMonth;
@@ -411,6 +482,7 @@ const incomeAmountUpdateValue = (e) => {
                 periodSelect.addEventListener(`input`, this.changePeriodAmount.bind(this));
                 depositCheck.addEventListener(`change`, this.depositHandler.bind(this));
             }
+
 
    }
    
