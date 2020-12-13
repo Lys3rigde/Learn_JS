@@ -80,14 +80,14 @@ const incomeAmountUpdateValue = (e) => {
  };
  additionalIncomeItem[1].addEventListener(`input`, additionalIncomeSecondItemUpdateValue);
 
- const setCookie = (key, value) => {
+ const addCookie = (key, value) => {
     let cookieStr = key + '=' + value;
     let date = Date.now() + 1000*60*60*24*7;
     date = new Date(date);
     cookieStr += '; expires = ' + date.toGMTString();
     document.cookie = cookieStr;
 };
-const unsetCookie = (key) => {
+const removeCookie = (key) => {
     let cookieStr = key + '= ""';
     let date = Date.now() - 1000000;
     date = new Date(date);
@@ -116,9 +116,9 @@ const init = function() {
             cancel.style.display = 'block';
         } else { 
             for (const key in resultStorage) {
-                unsetCookie(key);
+                removeCookie(key);
             }
-            unsetCookie('isLoad');
+            removeCookie('isLoad');
             localStorage.removeItem('budget');
         }
         
@@ -218,9 +218,9 @@ const init = function() {
         });
 
         for (const key in resultStorage) {
-            unsetCookie(key);
+            removeCookie(key);
         }
-        unsetCookie('isLoad');
+        removeCookie('isLoad');
         localStorage.removeItem('budget');
 
     
@@ -233,9 +233,9 @@ const init = function() {
         }
         localStorage.budget = JSON.stringify(inputObj);
 
-        setCookie('isLoad', 'true');
+        addCookie('isLoad', 'true');
         for (const key in inputObj) {
-            setCookie(key, inputObj[key]);
+            addCookie(key, inputObj[key]);
         }
         
     }
@@ -490,8 +490,7 @@ const init = function() {
 
     appData.eventListeners();
 
-
-   
+init();
     
    
 
